@@ -21,11 +21,11 @@ class Login extends React.Component {
   }
 
   login = () => {
-    if (this.phoneRef.value.length === 0) {
+    if (this.nameRef.value.length === 0) {
       message.error('请输入昵称！');
       return;
     }
-    if (this.phoneRef.value.length <= 2) {
+    if (this.nameRef.value.length <= 2) {
       message.error('昵称至少三个字符！');
       return;
     }
@@ -37,7 +37,7 @@ class Login extends React.Component {
       loading: true
     });
     HttpTool.login({
-      phone: this.phoneRef.value,
+      username: this.nameRef.value,
       pwd: md5(this.pwdRef.value)
     }, (res)=>{
       console.log(res);
@@ -61,8 +61,8 @@ class Login extends React.Component {
       <div className={classPrefix}>
         <div className={`${classPrefix}-container`}>
           <h1 className={`${classPrefix}-container-title`}>LOGIN</h1>
-          <p className={`${classPrefix}-container-desc`}>* 未注册的手机号则会自动注册</p>
-          <input className={`${classPrefix}-container-phone`} placeholder='请输入手机号' ref={(el)=>this.phoneRef=el} />
+          <p className={`${classPrefix}-container-desc`}>* 若昵称未注册则会自动注册</p>
+          <input className={`${classPrefix}-container-name`} placeholder='请输入昵称' ref={(el)=>this.nameRef=el} />
           <input className={`${classPrefix}-container-pwd`} placeholder='设置密码' type='password' ref={(el)=>this.pwdRef=el} />
           <Button className={`${classPrefix}-container-submit`} onClick={this.login} loading={this.state.loading} >登 录</Button>
         </div>
