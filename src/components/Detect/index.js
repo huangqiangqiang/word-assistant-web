@@ -16,8 +16,8 @@ class Detect extends React.Component {
         itemWidth: document.body.clientWidth * 0.8,
         itemMarginRight: document.body.clientWidth * 0.05,
         progress: 0,
-        score: 0,
         isLoading: false,
+        remenberWordCount: 0, // 记得的单词的数量
     };
   }
 
@@ -32,13 +32,15 @@ class Detect extends React.Component {
     this.fetchWords();
   }
 
-  handleCancel = () => {
-    this.props.onClose && this.props.onClose();
+  componentWillUnmount() {
+      window.onresize = null;
   }
 
   clickOK = (word) => {
       this.calcProgress(word);
       this.jumpNext(word);
+      const remenberWordCount = this.state.remenberWordCount + 1;
+      this.setState({ remenberWordCount });
   }
 
   clickNO = (word) => () => {
@@ -64,17 +66,19 @@ class Detect extends React.Component {
   }
 
   restart = () => {
+      this.setState({
+          remenberWordCount: 0,
+          progress: 0,
+      });
       this.fetchWords();
       this.scrollRef.style.transform = `translate3d(0px, 0px, 0px)`;
   }
 
   fetchWords = () => {
-    this.setState({
-        isLoading: true
-    });
-    HttpTool.detectWords({count: 30}, (res)=>{
+    this.setState({ isLoading: true });
+    HttpTool.detectWords({count: 5}, (res)=>{
         this.setState({
-            words: res.data,
+            words: res.data.data,
         });
         this.setState({ isLoading: false });
     }, (e)=>{
@@ -122,7 +126,7 @@ class Detect extends React.Component {
                 }
                 return (
                     <div key={word.text} className={`${classPrefix}-card`} style={newStyle}>
-                        <div className={`${classPrefix}-card-word`}>{word.text}</div>
+                        <div className={`${classPrefix}-card-word`}>{word.text.toLowerCase()}</div>
                         <div className={`${classPrefix}-card-buttons`}>
                             <div className={`${classPrefix}-card-buttons-cancel`} onClick={this.clickNO(word)}><img src={wrongIcon} alt='' /></div>
                             <div className={`${classPrefix}-card-buttons-ok`} onClick={()=>{this.clickOK(word);}}><img src={nextIcon} alt='' /></div>
@@ -134,7 +138,18 @@ class Detect extends React.Component {
         {
             this.state.words.length > 0 && (
                 <div className={`${classPrefix}-card ${classPrefix}-result`} style={style} >
-                    <div className={`${classPrefix}-result-score`}><b>{this.state.score}</b> 分</div>
+                    <div className={`${classPrefix}-result-score`}>
+                        <b>{parseInt(this.state.remenberWordCount / this.state.words.length * 100, 10)}</b> 分<br />
+                        <div className={`${classPrefix}-result-desc`}>
+                        {
+                            (this.state.words.length - this.state.remenberWordCount) === 0 ? (
+                                <span>perfect!</span>
+                            ) : (
+                                `有 ${this.state.words.length - this.state.remenberWordCount} 个单词不认识，再接再厉！`
+                            )
+                        }
+                        </div>
+                    </div>
                     <div className={`${classPrefix}-result-buttons`}>
                         <div className={`${classPrefix}-result-buttons-restart`} onClick={this.restart}>下一波</div>
                     </div>
