@@ -7,7 +7,6 @@ import historyIcon from './assets/history.png';
 import translateIcon from './assets/translate.png';
 import logoutIcon from './assets/logout.png';
 import testIcon from './assets/test.png';
-import { message } from 'antd';
 
 const classPrefix = 'Navigationbar';
 
@@ -16,6 +15,7 @@ class Navigationbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      position: 'bottom',
       hiddenPath: [
         '/login', // 需要隐藏的路由
       ],
@@ -38,7 +38,7 @@ class Navigationbar extends React.Component {
           title: '测验',
           icon: testIcon,
           onClick: ()=>{
-            message.warning('该功能暂未开放！');
+            this.props.history.push('/detect');
           }
         },
         {
@@ -101,14 +101,14 @@ class Navigationbar extends React.Component {
     if (this.state.status === 0) {
       const className = `${classPrefix}-showButton`;
       return (
-        <div className={className}>
+        <div className={className} >
           <div className={`${classPrefix}-container-item`} onClick={this.toggle}><img src={showIcon} alt='' /></div>
         </div>
       );
     } else {
       return (
-        <div className={classPrefix}>
-          <div className={`${classPrefix}-container`}>
+        <div className={`${classPrefix} ${classPrefix}-direction-${this.state.position}`}>
+          <div className={`${classPrefix}-container ${classPrefix}-container-direction-${this.state.position}`} >
           {
             this.state.items.map((item)=>{
               return (

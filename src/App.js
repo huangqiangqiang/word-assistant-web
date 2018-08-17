@@ -3,6 +3,7 @@ import './App.less';
 import Translate from './components/Translate';
 import Login from './components/Login';
 import WordHistory from './components/WordHistory';
+import Detect from './components/Detect';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AuthRoute from './utils/AuthRoute';
 import { withRouter } from 'react-router-dom';
@@ -18,6 +19,7 @@ class App extends Component {
           <AuthRoute exact path="/" component={Translate} />
           <Route path="/login" component={Login} />
           <AuthRoute path="/history" component={WordHistory} />
+          <AuthRoute path="/detect" component={Detect} />
           <Redirect to="/login"/>
         </Switch>
         <NavigationBar />

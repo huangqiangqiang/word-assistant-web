@@ -1,13 +1,27 @@
 @prefix: Navigationbar;
 
+@itemWidth: 60px;
+@itemHeight: 60px;
+
 .@{prefix} {
-  top: 0px;
-  right: 0px;
   position: fixed;
-  height: 100%;
-  width: 60px;
   display: flex;
   align-items: center;
+  justify-content: center;
+
+  &-direction-right {
+    right: 0px;
+    top: 0px;
+    width: @itemWidth;
+    height: 100%;
+  }
+
+  &-direction-bottom {
+    right: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: @itemHeight;
+  }
 
   &-hide {
     display: none;
@@ -20,8 +34,8 @@
   &-showButton {
     position: fixed;
     right: 0px;
-    width: 60px;
-    height: 50px;
+    width: @itemWidth;
+    height: @itemHeight;
     bottom: 10px;
     background-color: #f7f7f7;
     border-radius: 10px 0 0 10px;
@@ -34,15 +48,27 @@
   &-container {
     width: 100%;
     background-color: #f7f7f7;
-    border-radius: 10px 0 0 10px;
-    border-top: 1px solid #ddd;
-    border-left: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
     overflow: hidden;
 
+    &-direction-right {
+      border-radius: 10px 0 0 10px;
+      border-top: 1px solid #ddd;
+      border-left: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+  
+    &-direction-bottom {
+      border-radius: 10px 10px 0 0;
+      border-top: 1px solid #ddd;
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      display: flex;
+      max-width: 300px;
+    }
+
     &-item {
-      height: 50px;
-      line-height: 50px;
+      height: @itemHeight;
+      line-height: @itemHeight;
       text-align: center;
       box-sizing: border-box;
       width: 100%;
@@ -52,10 +78,6 @@
       & > img {
         width: 35%;
       }
-    }
-
-    &-item:hover {
-      // background-color: #e8f1f7;
     }
   }
 
