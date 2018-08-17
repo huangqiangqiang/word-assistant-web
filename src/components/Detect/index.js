@@ -1,9 +1,17 @@
 import * as React from 'react';
 import './index.less';
 import HttpTool from '../../utils/HttpTool';
-import { Progress, message } from 'antd';
+import { Progress, message, Slider, Modal, Button } from 'antd';
 import nextIcon from './assets/next.png';
 import wrongIcon from './assets/wrong.png';
+
+const marks = {
+    1: '1',
+    50: '50',
+    100: '100',
+    200: '200',
+    500: '500',
+};
 
 const classPrefix = 'Detect';
 
@@ -12,6 +20,8 @@ class Detect extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+        tmpCount: 50,
+        detectCount: 0,
         words: [],
         itemWidth: document.body.clientWidth * 0.8,
         itemMarginRight: document.body.clientWidth * 0.05,
@@ -28,8 +38,6 @@ class Detect extends React.Component {
             itemMarginRight: document.body.clientWidth * 0.05,
         });
     };
-
-    this.fetchWords();
   }
 
   componentWillUnmount() {
@@ -76,15 +84,22 @@ class Detect extends React.Component {
 
   fetchWords = () => {
     this.setState({ isLoading: true });
-    HttpTool.detectWords({count: 5}, (res)=>{
+    HttpTool.detectWords({count: this.state.detectCount}, (res)=>{
         this.setState({
             words: res.data.data,
         });
         this.setState({ isLoading: false });
     }, (e)=>{
+        console.log(e);
         this.setState({ isLoading: false });
         message.error('服务器异常，请稍后再试！');
-        console.log(e);
+    });
+  }
+
+  handleOnSelectDetectCount = () => {
+    const detectCount = this.state.tmpCount;
+    this.setState({ detectCount },()=>{
+        this.fetchWords();
     });
   }
 
@@ -157,6 +172,20 @@ class Detect extends React.Component {
             )
         }
         </div>
+        {
+            this.state.detectCount === 0 && (
+                <Modal
+                title="选择测验的单词数量"
+                visible={this.state.detectCount === 0}
+                closable={false}
+                footer={[
+                    <Button onClick={this.handleOnSelectDetectCount}>确定</Button>,
+                ]}
+                >
+                    <Slider min={1} max={500} marks={marks} defaultValue={this.state.tmpCount} onChange={(value)=>this.setState({tmpCount:value})} />
+                </Modal>
+            )
+        }
       </div>
     );
   }
