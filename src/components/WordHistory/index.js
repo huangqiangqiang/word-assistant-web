@@ -41,6 +41,10 @@ class WordHistory extends React.Component {
     this.loadMore();
   }
 
+  componentWillUnmount() {
+    window.onscroll = null;
+  }
+
   // 加载更多
   loadMore = () => {
     if (this.state.isLoading || this.state.isLastPage) { return; }

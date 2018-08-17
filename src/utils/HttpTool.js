@@ -99,6 +99,23 @@ class HttpTool {
       failure && failure(e);
     });
   }
+
+  /**
+   * 测试
+   */
+  static detectWords = (params, success, failure) => {
+    axios.get(`detect?count=${params.count}`, {
+      headers:{
+        Authorization: `Bearer ${HttpTool.token}`
+      }
+    })
+    .then((res)=>{
+      success && success(res);
+    })
+    .catch((e)=>{
+      failure && failure(e);
+    });
+  }
 }
 
 export default HttpTool;
