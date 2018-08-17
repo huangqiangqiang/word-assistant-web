@@ -3,21 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.less';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import {
-  // BrowserRouter as Router, 
-  HashRouter as Router, 
-} from 'react-router-dom';
-// import vconsole from 'vconsole';
+import { HashRouter as Router} from 'react-router-dom';
 
-// (process.env.REACT_APP_IS_PRODUCTION !== '1') && new vconsole();
+// import vconsole from 'vconsole';
+// new vconsole();
 
 ReactDOM.render(
-
-  <Router
-  // basename={`/quickwords`}
-  >
+  <Router>
   <App />
   </Router>
-  
   , document.getElementById('root'));
 registerServiceWorker();

@@ -51,10 +51,6 @@ class Translate extends React.Component {
   }
 
   toTranslate = () => {
-    if (!HttpTool.token) {
-      this.props.history.push('/login');
-      return;
-    }
     if (this.inputTextRef.value.length === 0) {
       message.error('请输入需要翻译的单词');
       return;

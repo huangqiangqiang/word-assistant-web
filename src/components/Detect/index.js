@@ -90,6 +90,11 @@ class Detect extends React.Component {
         });
         this.setState({ isLoading: false });
     }, (e)=>{
+        if (e.response && e.response.status === 401) {
+          localStorage.removeItem('token');
+          location.reload();
+          return;
+        }
         console.log(e);
         this.setState({ isLoading: false });
         message.error('服务器异常，请稍后再试！');
