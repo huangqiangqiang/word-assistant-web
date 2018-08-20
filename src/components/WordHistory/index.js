@@ -203,6 +203,7 @@ class WordHistory extends React.Component {
         }
         </ul>
           <div className={`${classPrefix}-loadmore`}>{this.state.isLastPage ? `共 ${this.state.words.length} 个单词` : `正在加载，目前有 ${this.state.words ? this.state.words.length : 0} 个单词`}</div>
+          <div className={`${classPrefix}-blank`}></div>
         <Editor 
           visible={this.state.editVisible}
           word={this.state.selectWord}
