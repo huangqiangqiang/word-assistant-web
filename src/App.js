@@ -16,9 +16,9 @@ class App extends Component {
     return (
       <div className={classPrefix}>
         <Switch>
-          <AuthRoute exact path="/" component={Translate} />
+          <AuthRoute exact path="/" component={WordHistory} />
           <Route path="/login" component={Login} />
-          <AuthRoute path="/history" component={WordHistory} />
+          <AuthRoute path="/translate" component={Translate} />
           <AuthRoute path="/detect" component={Detect} />
           <Redirect to="/login"/>
         </Switch>

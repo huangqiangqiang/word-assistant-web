@@ -21,17 +21,17 @@ class Navigationbar extends React.Component {
       ],
       items: [
         {
-          title: '去翻译',
-          icon: translateIcon,
+          title: '我的单词',
+          icon: historyIcon,
           onClick: ()=>{
             this.props.history.push('/');
           }
         },
         {
-          title: '我的单词',
-          icon: historyIcon,
+          title: '去翻译',
+          icon: translateIcon,
           onClick: ()=>{
-            this.props.history.push('/history');
+            this.props.history.push('/translate');
           }
         },
         {
