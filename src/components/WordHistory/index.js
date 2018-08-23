@@ -173,18 +173,23 @@ class WordHistory extends React.Component {
                         </div>
                         <div className={`${classPrefix}-content-dst`}>
                         {
-                          hasVoice && <div className={`${classPrefix}-content-dst-voice`}>{`[${word.baseInfo.voice.am}]`}</div>
+                          <div className={`${classPrefix}-content-dst-voice`}>{hasVoice ? `[${word.baseInfo.voice.am}]` : '[无音标]'}</div>
                         }
                         {
-                          word.baseInfo.dst_info && word.baseInfo.dst_info.map((info, i)=>{
-                            if (i > 4) {
-                              // 太多了显示不下
-                              return null;
-                            }
-                            return (
-                              <div key={info.means}>{`${info.part} ${info.means}`}</div>
-                            );
-                          })
+                          word.baseInfo.dst_info ? (
+                            // 有dst_info字段便展示，没有则展示dst字段
+                            word.baseInfo.dst_info.map((info, i)=>{
+                              if (i > 4) {
+                                // 太多了显示不下
+                                return null;
+                              }
+                              return (
+                                <div key={info.means}>{`${info.part} ${info.means}`}</div>
+                              );
+                            })
+                          ) : (
+                            word.baseInfo.dst
+                          )
                         }
                         </div>
                         <div className={`${classPrefix}-content-toolbar`}>
