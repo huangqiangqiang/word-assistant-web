@@ -77,8 +77,13 @@ class WordHistory extends React.Component {
         isLoading: false,
         isLastPage: (data.data.length !== 50),
       });
-    },(err)=>{
-      console.log(err);
+    },(e)=>{
+      console.log(e);
+      if (e.response && e.response.status === 401) {
+        localStorage.removeItem('token');
+        location.reload();
+        return;
+      }
       message.error('服务器异常，请稍后再试！');
       this.setState({
         isLoading: false,
@@ -224,6 +229,5 @@ class WordHistory extends React.Component {
     );
   }
 }
-
 
 export default withRouter(WordHistory);
