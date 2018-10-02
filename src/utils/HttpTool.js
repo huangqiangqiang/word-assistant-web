@@ -60,7 +60,9 @@ class HttpTool {
     .then((res)=>{
       // 只缓存第0页
       if (page === 0) {
-        localStorage.setItem('QWPageZero', JSON.stringify(res.data));
+        if (res.data) {
+          localStorage.setItem('QWPageZero', JSON.stringify(res.data));
+        }
       }
       success && success(res.data);
     })
@@ -73,7 +75,7 @@ class HttpTool {
    * 从历史记录中删除单词
    */
   static deleteWord = (word, success, failure) => {
-    axios.delete(`history?word_id=${word.word_id}`,{
+    axios.delete(`history?word_id=${word._id}`,{
       headers:{
         Authorization: `Bearer ${HttpTool.token}`
       }

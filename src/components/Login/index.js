@@ -52,6 +52,9 @@ class Login extends React.Component {
       this.props.history.push('/');
     }, (e)=>{
       console.log(e);
+      this.setState({
+        loading: false
+      });
       message.error('服务器异常，请稍后再试！');
     });
   }

@@ -53,29 +53,31 @@ class WordList extends React.Component {
     this.setState({
       isLoading: true
     });
-    HttpTool.historyWords(page, (data)=>{
-      console.log(data);
-      if (data.status === 1) {
+    HttpTool.historyWords(page, (response)=>{
+      const { status, data, message } = response;
+      if (status === 1) {
         let words = this.state.words;
         if (!words) {
           words = [];
         }
         let newWordsList = [];
         if (page === 0) {
-          newWordsList = [...data.data];
+          if (data) {
+            newWordsList = [...data];
+          }
         } else {
-          newWordsList = [...words, ...data.data];
+          newWordsList = [...words, ...data];
         }
         this.setState({
           words: newWordsList,
           currPage: page + 1,
         });
       } else {
-        message.error(data.message);
+        message.error(message);
       }
       this.setState({
         isLoading: false,
-        isLastPage: (data.data.length !== 50),
+        isLastPage: data ? (data.length !== 50) : true,
       });
     },(e)=>{
       console.log(e);
@@ -95,8 +97,9 @@ class WordList extends React.Component {
     HttpTool.deleteWord(word, (res)=>{
       if (res.data.status === 1) {
         const newWords = this.state.words.filter((item)=>{
-          return item.id !== word.id;
+          return item._id !== word._id;
         });
+        console.log('newWords',newWords);
         this.setState({
           words: newWords
         });
