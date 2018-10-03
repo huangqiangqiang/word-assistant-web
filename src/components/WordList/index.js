@@ -113,7 +113,8 @@ class WordList extends React.Component {
   }
 
   speakWord = (word) => () => {
-    const audio = this.voiceRefs[word.id];
+    console.log(word);
+    const audio = this.voiceRefs[word._id];
     audio.play();
   }
 
@@ -207,7 +208,7 @@ class WordList extends React.Component {
                           }
                           {
                             hasVoice &&
-                            <audio ref={(el)=>this.voiceRefs[word.id]=el}>
+                            <audio ref={(el)=>this.voiceRefs[word._id]=el}>
                               <source src={word.baseInfo.voice.am_mp3} type="audio/mpeg" />
                             </audio>
                           }
