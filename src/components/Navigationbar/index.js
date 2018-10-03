@@ -3,7 +3,7 @@ import './index.less';
 import { withRouter } from 'react-router-dom';
 import hideIcon from './assets/hide.png';
 import showIcon from './assets/show.png';
-import historyIcon from './assets/history.png';
+import listIcon from './assets/list.png';
 import translateIcon from './assets/translate.png';
 import logoutIcon from './assets/logout.png';
 import testIcon from './assets/test.png';
@@ -21,17 +21,17 @@ class Navigationbar extends React.Component {
       ],
       items: [
         {
-          title: '我的单词',
-          icon: historyIcon,
-          onClick: ()=>{
-            this.props.history.push('/');
-          }
-        },
-        {
           title: '去翻译',
           icon: translateIcon,
           onClick: ()=>{
             this.props.history.push('/translate');
+          }
+        },
+        {
+          title: '我的单词',
+          icon: listIcon,
+          onClick: ()=>{
+            this.props.history.push('/');
           }
         },
         {
