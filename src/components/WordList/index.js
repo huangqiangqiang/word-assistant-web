@@ -138,6 +138,32 @@ class WordList extends React.Component {
     });
   }
 
+  handleOnKeepInMind = (newWord) => () => {
+    if (!newWord.expand) {
+      newWord.expand = {};
+      newWord.expand.isKeepInMind = true;
+    } else {
+      newWord.expand.isKeepInMind = !newWord.expand.isKeepInMind;
+    }
+    HttpTool.editWords(newWord, (res) => {
+      const { data: { status } } = res;
+      if (status === 1) {
+        const newWords = this.state.words.map((word)=>{
+          if (word.text === newWord.text) {
+            return newWord;
+          } else {
+            return word;
+          }
+        });
+        this.setState({
+          words: newWords,
+        });
+      }
+    }, (err) => {
+      console.log(err);
+    });
+  }
+
   displayExtends = (word) => () => {
     this.setState({
       editVisible: false,
@@ -158,13 +184,20 @@ class WordList extends React.Component {
               <div className={`${classPrefix}-placehold`}>没有查询记录</div>
             ) : (
               this.state.words.map((word)=>{
-                const hasVoice = word.baseInfo.voice;
+                const { expand, baseInfo: { voice } } = word;
+                const hasVoice = voice;
                 let hasVoiceMP3 = false;
+                let isKeepInMind = false;
+                let hasDescription = false;
                 if (hasVoice) {
-                  hasVoiceMP3 = word.baseInfo.voice.am_mp3;
+                  hasVoiceMP3 = voice.am_mp3;
+                }
+                if (expand) {
+                  isKeepInMind = (expand.isKeepInMind === true);
+                  hasDescription = expand.detail;
                 }
                 return (
-                  <li key={word.id}>
+                  <li key={word._id}>
                       <div className={`${classPrefix}-content`}>
                         <div className={`${classPrefix}-content-src`}>
                           <div className={`${classPrefix}-content-src-text`}>{word.baseInfo.src.toLowerCase()}</div>
@@ -201,15 +234,23 @@ class WordList extends React.Component {
                         }
                         </div>
                         <div className={`${classPrefix}-content-toolbar`}>
-                          <span>
-                            <svg viewBox="0 -10 35 35" width="35" height="35" aria-hidden="true" className={`${classPrefix}-content-toolbar-open`}><path fillRule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
-                          </span>
-                          <span>
-                            <svg viewBox="0 -10 35 35" width="35" height="35" aria-hidden="true" className={`${classPrefix}-content-toolbar-close`}><path fillRule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path></svg>
-                          </span>
+                          {
+                            isKeepInMind && (
+                              <span onClick={this.handleOnKeepInMind(word)}>
+                                <svg viewBox="0 -10 35 35" width="35" height="35" aria-hidden="true" className={`${classPrefix}-content-toolbar-close`}><path fillRule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path></svg>
+                              </span>
+                            )
+                          }
+                          {
+                            !isKeepInMind && (
+                              <span onClick={this.handleOnKeepInMind(word)}>
+                                <svg viewBox="0 -10 35 35" width="35" height="35" aria-hidden="true" className={`${classPrefix}-content-toolbar-open`}><path fillRule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+                              </span>
+                            )
+                          }
                           <span onClick={this.edit(word)}><img src={editIcon} alt='' /></span>
                           {
-                            word.extends && <span onClick={this.displayExtends(word)}><img src={detailIcon} alt='' /></span>
+                            hasDescription && <span onClick={this.displayExtends(word)}><img src={detailIcon} alt='' /></span>
                           }
                         </div>
                         <div className={`${classPrefix}-content-delete`} onClick={this.deleteWord(word)}><img src={deleteIcon} alt='' /></div>

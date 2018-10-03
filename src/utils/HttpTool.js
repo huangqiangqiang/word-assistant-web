@@ -102,9 +102,6 @@ class HttpTool {
     });
   }
 
-  /**
-   * 测试
-   */
   static detectWords = (params, success, failure) => {
     axios.get(`detect?count=${params.count}`, {
       headers:{
