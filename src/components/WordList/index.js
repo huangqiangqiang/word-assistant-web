@@ -9,6 +9,7 @@ import editIcon from './assets/edit.png';
 import detailIcon from './assets/detail.png';
 import Editor from '../Editor';
 import Details from '../Details';
+import { eventProxy } from 'react-eventproxy';
 
 const classPrefix = 'Wordlist';
 
@@ -29,6 +30,20 @@ class WordList extends React.Component {
   }
 
   componentDidMount() {
+
+    eventProxy.on('wordListWillOnlyShowKeepInMind', () => {
+      this.setState({
+        isOnlyShowNotKeepInMind: false,
+        isOnlyShowKeepInMind: true,
+      });
+    });
+    eventProxy.on('wordListWillOnlyShowNotKeepInMind', () => {
+      this.setState({
+        isOnlyShowKeepInMind: false,
+        isOnlyShowNotKeepInMind: true,
+      });
+    });
+
     window.onscroll = () => {
       const sHeight = document.documentElement.scrollTop || document.body.scrollTop; //滚动高度
       const wHeight = document.documentElement.clientHeight; //window 
@@ -196,6 +211,12 @@ class WordList extends React.Component {
                 if (expand) {
                   isKeepInMind = (expand.isKeepInMind === true);
                   hasDescription = expand.detail;
+                }
+                if (this.state.isOnlyShowKeepInMind && !isKeepInMind) {
+                  return null;
+                }
+                if (this.state.isOnlyShowNotKeepInMind && isKeepInMind) {
+                  return null;
                 }
                 return (
                   <li key={word._id}>

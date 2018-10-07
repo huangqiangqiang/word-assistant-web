@@ -7,6 +7,8 @@ import listIcon from './assets/list.png';
 import translateIcon from './assets/translate.png';
 import logoutIcon from './assets/logout.png';
 import testIcon from './assets/test.png';
+import { Menu, Dropdown } from 'antd';
+import { eventProxy } from 'react-eventproxy';
 
 const classPrefix = 'Navigationbar';
 
@@ -29,6 +31,20 @@ class Navigationbar extends React.Component {
         },
         {
           title: '我的单词',
+          subTitle: [
+            {
+              title: '只显示不熟悉的单词',
+              onClick: () => {
+                eventProxy.trigger('wordListWillOnlyShowNotKeepInMind');
+              },
+            },
+            {
+              title: '只显示熟悉的单词',
+              onClick: () => {
+                eventProxy.trigger('wordListWillOnlyShowKeepInMind');
+              },
+            },
+          ],
           icon: listIcon,
           onClick: ()=>{
             this.props.history.push('/');
@@ -111,17 +127,46 @@ class Navigationbar extends React.Component {
           <div className={`${classPrefix}-container ${classPrefix}-container-direction-${this.state.position}`} >
           {
             this.state.items.map((item)=>{
-              return (
-                <div key={item.title} className={`${classPrefix}-container-item`} onClick={item.onClick}>
-                  {
-                    item.icon ? (
-                      <img src={item.icon} alt={item.title} />
-                    ) : (
-                      item.title
-                    )
-                  }
-                </div>
-              );
+              if (item.subTitle) {
+                const menu = (
+                  <Menu>
+                    {
+                      item.subTitle.map((subItem) => {
+                        return (
+                          <Menu.Item>
+                            <div onClick={()=>{item.onClick();subItem.onClick();}}>{subItem.title}</div>
+                          </Menu.Item>
+                        );
+                      })
+                    }
+                  </Menu>
+                );
+                return (
+                  <Dropdown overlay={menu} placement="topLeft">
+                    <div key={item.title} className={`${classPrefix}-container-item`} onClick={item.onClick}>
+                      {
+                        item.icon ? (
+                          <img src={item.icon} alt={item.title} />
+                        ) : (
+                          item.title
+                        )
+                      }
+                    </div>
+                  </Dropdown>
+                );
+              } else {
+                return (
+                  <div key={item.title} className={`${classPrefix}-container-item`} onClick={item.onClick}>
+                    {
+                      item.icon ? (
+                        <img src={item.icon} alt={item.title} />
+                      ) : (
+                        item.title
+                      )
+                    }
+                  </div>
+                );
+              }
             })
           }
           </div>
