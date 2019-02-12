@@ -1,7 +1,0 @@
-build
-deploy
-node_modules/
-public
-config-overrides.js
-config
-scripts
