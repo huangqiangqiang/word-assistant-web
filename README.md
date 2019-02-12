@@ -12,3 +12,8 @@
 - 执行`npm run build`。
 - 把build文件夹的内容放在<a href='https://github.com/huangqiangqiang/word-assistant'>`word-assistant`</a>项目的`public`文件夹内。</p>
 - 浏览器输入`localhost:8080`即可访问。</p>
+
+### 部署到gh-pages
+```
+npm run deploy
+```
