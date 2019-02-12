@@ -34,7 +34,7 @@ class Details extends React.Component {
           <div className={`${classPrefix}-QWModal-header`}>
             {word ? word.text : 'null'}
           </div>
-          <div className={`${classPrefix}-QWModal-content`} dangerouslySetInnerHTML={{__html: converter.makeHtml(word.extends)}}>
+          <div className={`${classPrefix}-QWModal-content`} dangerouslySetInnerHTML={{__html: converter.makeHtml(word.expand.detail)}}>
           </div>
           <Divider></Divider>
           <div className={`${classPrefix}-QWModal-footer`}>

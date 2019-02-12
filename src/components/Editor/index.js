@@ -27,9 +27,10 @@ class Editor extends React.Component {
     });
     HttpTool.editWords({
       text: this.props.word.text,
-      content: this.state.mde.value(),
+      expand: {
+        detail: this.state.mde.value(),
+      },
     }, (res)=>{
-      console.log(res);
       this.setState({
         loading: false,
       });
@@ -54,14 +55,14 @@ class Editor extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { visible, word } = nextProps;
-    if (visible && this.state.mde && word.extends) {
+    if (visible && this.state.mde && word.expand.detail) {
       this.state.mde.toTextArea();
       this,this.setState({
         mde: null,
       }, ()=>{
         const mde = new SimpleMDE({ element: this.editer });
         console.log(mde.isPreviewActive());
-        mde.value(word.extends);
+        mde.value(word.expand.detail);
         this.setState({ mde });
       });
     }

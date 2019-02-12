@@ -1,6 +1,6 @@
 # word-assistant-web
 
-<a href='https://github.com/huangqiangqiang/word-assistant'>server端</a>
+<a href='https://github.com/huangqiangqiang/word-assistant'>server</a>
 
 ### 效果图
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.less';
 import Translate from './components/Translate';
 import Login from './components/Login';
-import WordHistory from './components/WordHistory';
+import WordList from './components/WordList';
 import Detect from './components/Detect';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AuthRoute from './utils/AuthRoute';
@@ -16,9 +16,9 @@ class App extends Component {
     return (
       <div className={classPrefix}>
         <Switch>
-          <AuthRoute exact path="/" component={Translate} />
+          <AuthRoute exact path="/" component={WordList} />
           <Route path="/login" component={Login} />
-          <AuthRoute path="/history" component={WordHistory} />
+          <AuthRoute path="/translate" component={Translate} />
           <AuthRoute path="/detect" component={Detect} />
           <Redirect to="/login"/>
         </Switch>
